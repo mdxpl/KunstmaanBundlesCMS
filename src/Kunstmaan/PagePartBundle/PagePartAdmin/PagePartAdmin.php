@@ -192,11 +192,12 @@ class PagePartAdmin
         // Create the objects for the new pageparts
         $this->newPageParts = array();
         $newRefIds = $request->get($this->context.'_new');
+        $pagePartFactory = $this->container->get('kunstmaan_page_part.factory.page_part_factory');
 
         if (is_array($newRefIds)) {
             foreach ($newRefIds as $newId) {
                 $type = $request->get($this->context.'_type_'.$newId);
-                $this->newPageParts[$newId] = new $type();
+                $this->newPageParts[$newId] = $pagePartFactory->create($type, $this->getPage(), $this->getContext());
             }
         }
 
@@ -279,7 +280,7 @@ class PagePartAdmin
             if (isset($pagePart)) {
                 $this->container->get('event_dispatcher')->dispatch(
                     Events::POST_PERSIST,
-                    new PagePartEvent($pagePart)
+                    new PagePartEvent($pagePart, $this->page, $this->context)
                 );
             }
         }

@@ -2,10 +2,7 @@
 
 namespace Kunstmaan\PagePartBundle\Event;
 
-use Kunstmaan\NodeBundle\Entity\HasNodeInterface;
-use Kunstmaan\NodeBundle\Entity\Node;
-use Kunstmaan\NodeBundle\Entity\NodeTranslation;
-use Kunstmaan\NodeBundle\Entity\NodeVersion;
+use Kunstmaan\PagePartBundle\Helper\HasPagePartsInterface;
 use Kunstmaan\PagePartBundle\Helper\PagePartInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,16 +20,28 @@ class PagePartEvent extends Event
     /**
      * @var Response
      */
-    private $response = null;
+    private $response;
 
     /**
-     * PagePartEvent constructor.
-     *
-     * @param PagePartInterface $pagePart
+     * @var string|null
      */
-    public function __construct(PagePartInterface $pagePart)
+    private $context;
+
+    /**
+     * @var HasPagePartsInterface|null
+     */
+    private $page;
+
+    /**
+     * @param PagePartInterface $pagePart
+     * @param HasPagePartsInterface|null $page
+     * @param string|null $context
+     */
+    public function __construct(PagePartInterface $pagePart, HasPagePartsInterface $page = null, $context = null)
     {
         $this->pagePart = $pagePart;
+        $this->context = $context;
+        $this->page = $page;
     }
 
     /**
@@ -66,4 +75,21 @@ class PagePartEvent extends Event
     {
         $this->response = $response;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
+     * @param string|null $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
+
 }

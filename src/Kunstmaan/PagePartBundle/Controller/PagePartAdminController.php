@@ -55,8 +55,8 @@ class PagePartAdminController extends Controller
         }
 
         $pagePartAdmin = new PagePartAdmin($pagePartAdminConfigurator, $em, $page, $context, $this->container);
-        /** @var PagePartInterface $pagePart */
-        $pagePart      = new $pagePartClass();
+        $pagePartFactory = $this->get('kunstmaan_page_part.factory.page_part_factory');
+        $pagePart        = $pagePartFactory->create($pagePartClass, $page, $context);
 
         if (false === $pagePart instanceof PagePartInterface) {
             throw new \RuntimeException(sprintf(

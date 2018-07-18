@@ -94,3 +94,7 @@ services:
 
         tags:
             - { name: kernel.event_listener, event: kunstmaan_admin.postDeepCloneAndSave, method: postDeepCloneAndSave }
+
+    kunstmaan_page_part.factory.page_part_factory:
+        class: Kunstmaan\PagePartBundle\Factory\PagePartFactory
+        arguments: ['@event_dispatcher']
